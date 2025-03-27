@@ -20,5 +20,25 @@ pipeline {
                 '''
             }
         }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Testing..."
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run test
+                    ls -la
+                '''
+            }
+        }
     }
 }
