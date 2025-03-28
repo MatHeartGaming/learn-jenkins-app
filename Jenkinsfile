@@ -31,10 +31,9 @@ pipeline {
             steps {
                 sh '''
                     echo "Testing..."
-                    ls -la
+                    test -f build/index.html
                     node --version
                     npm --version
-                    npm ci
                     npm run test
                     ls -la
                 '''
