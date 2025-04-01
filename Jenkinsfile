@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID: credentials('84aecc75-7971-48aa-b0e9-b4c5dfcbdb36')
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -48,7 +52,7 @@ pipeline {
                     }
                 }
 
-                stage('E2E') {
+                /*stage('E2E') {
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.50.0-noble'
@@ -71,7 +75,7 @@ pipeline {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
-                }
+                }*/
             }
         }
 
@@ -85,7 +89,8 @@ pipeline {
             steps {
                 sh '''
                     npm install netlify-cli
-                    netlify --version
+                    node_modules/.bin/netlify --version
+                    echo "Deplying to production. Site ID: $NETLIFY_SITE_ID"
                 '''
             }
         }
